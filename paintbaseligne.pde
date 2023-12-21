@@ -33,7 +33,9 @@ void draw() {
         stroke(0);
         // vérifier si la souris est située dans le cadre de dessin
         if(mouseY>marge && mouseY<height-marge){
-        line (pmouseX, pmouseY, mouseX, mouseY);
+          if (boutonLigneSelect == true) {
+            line (pmouseX, pmouseY, mouseX, mouseY);
+          }
         }
     }
     //Afficher 3 boutons colorés
