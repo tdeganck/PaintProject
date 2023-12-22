@@ -2,15 +2,17 @@ boolean dessiner;
 boolean boutonLigneSelect;
 boolean boutonRectSelect;
 boolean boutonElSelect;
+boolean boutonEffSelect;
 int lastclicX;
 int lastclicY;
 int marge;
 int a;
 int b;
 int c;
+int numBouton;
 
 void setup() {
-    size(900, 500);
+    size(1100, 800);
 
     //assigner valeur de départ à lastclic
     lastclicX = 0;
@@ -19,17 +21,12 @@ void setup() {
     //assigner valeur à marge
     marge = 100;
 
-    //assigner valeur de départ à l'interrupteur de dessiner
+    //assigner des valeur de départ aux booléens
     dessiner = false;
-    
-    //assigner une valeur de départ à l'interrupteur bouton ligne
     boutonLigneSelect = false;
-
-    //assigner une valeur de départ à l'interrupteur bouton rectangle
     boutonRectSelect = false;
-
-    //assigner une valeur de départ à l'interrupteur bouton ellipse
     boutonElSelect = false;
+    boutonEffSelect = false;
 
     //paramétrage du cadre du dessin
     stroke(0);
@@ -39,12 +36,21 @@ void setup() {
     rectMode (CENTER);
     rect(width/2, height/2, width, height-marge*2);
     
+    textSize (50);
+    textAlign (CENTER, CENTER);
+    fill (234, 7, 117);
+    text("Joyeuses fêtes !", width/2, marge/2);
 
 }
 
 void draw () {
   afficheBoutons ();
     if (dessiner == true){
+      
+      //si on est dans le cadre de dessin on peut dessiner des formes
+      if (mouseY>marge && mouseY<height-marge){
+        
+        //
         if (boutonLigneSelect==true){
                 line(pmouseX, pmouseY, mouseX, mouseY);
         }
@@ -60,20 +66,43 @@ void draw () {
           fill (100);
           ellipse (lastclicX, lastclicY, mouseX, mouseY);
         }
+      }  
+    }
+    if (boutonEffSelect == true){
+      fill(255);
+      rectMode (CENTER);
+      rect(width/2, height/2, width, height-marge*2);
     }
 }
 
-void afficheBoutons() {
+void afficheBoutons() {   
+    numBouton = 0;
     int a = marge;
     int b = height-(marge/2);
     int c;
     stroke (0);
     rectMode (CENTER);
     
-    for(c =a/2; c<(a*8); c=c+a){
+    for(c =a/2; c<(a*4); c=c+a){
+      for (numBouton = 0; numBouton<4; numBouton = numBouton +1){
       fill (250, 229, 252);
       rect (c, b, a, a);
-    }  
+      textSize (20);
+      fill (234, 7, 117);
+      textAlign (CENTER, CENTER);
+        if (numBouton < 1){
+          text ("Ligne", a/2, height-marge/2);
+          } else if (numBouton < 2) {
+            text ("Rect", a/2+a, height-marge/2);
+          } else if (numBouton < 3) {
+            text ("Ellipse", a/2+a*2, height-marge/2);
+          } else if (numBouton < 4) {
+            text ("Effacer", a/2+a*3, height-marge/2);
+          }
+      }
+    }
+ 
+
 
     // afficher le bouton sélectionné en jaune
     if (boutonLigneSelect == true){
@@ -85,8 +114,18 @@ void afficheBoutons() {
       } else if (boutonElSelect== true){
         fill (252, 245, 214);
         rect (c=a*2+a/2, b, a, a);
+      } else if (boutonEffSelect == true){
+        fill (252, 245, 214);
+        rect (c=a*3+a/2, b, a, a);
       }
+      
+      textSize (25);
+      fill (42, 67, 41);
+      textAlign (LEFT, CENTER);
+      text("Enfoncez < espace > pour effacer la forme en cours", a*5, height-marge/2);
 }
+
+
 
 void mousePressed() {
     lastclicX = mouseX;
@@ -115,4 +154,10 @@ void mousePressed() {
         boutonElSelect = !boutonElSelect;
       }
     }
+        //(dés)activer le bouton effacer
+    if(mouseX<marge*4 && mouseX>marge*3){
+      if (mouseY>height-marge){
+        boutonEffSelect = !boutonEffSelect;
+      }
+    }  
 }
