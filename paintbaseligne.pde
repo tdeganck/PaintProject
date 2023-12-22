@@ -1,6 +1,9 @@
 boolean dessiner;
 boolean boutonLigneSelect;
+boolean boutonRectSelect;
 int marge;
+int rectX1;
+int rectY1;
 
 void setup() {
     //fenêtre de l'app
@@ -12,6 +15,9 @@ void setup() {
     
     //assigner une valeur de départ à l'interrupteur bouton ligne
     boutonLigneSelect = false;
+
+    //assigner une valeur de départ à l'interrupteur bouton rectangle
+    boutonRectSelect = false;
     
     //assigner une valeur à la marge
     marge = 200;
@@ -35,6 +41,17 @@ void draw() {
         if(mouseY>marge && mouseY<height-marge){
           if (boutonLigneSelect == true) {
             line (pmouseX, pmouseY, mouseX, mouseY);
+          } else if (boutonRectSelect == true) {
+            while (boutonRectSelect==true){
+              int x2 = new int;
+              x2 = mouseX; 
+              int y2 = new int;
+              y2 = mouseY;
+              //sortir du bloc pour dessiner le rectangle ou non ?
+            rectMode(CORNERS);
+            noFill();
+            rect (x1, y1, x2, y2);
+            }
           }
         }
     }
@@ -63,6 +80,13 @@ void mousePressed() {
     //idem pour l'outil ligne
     if(mouseX<(marge/2)+marge&&mouseY>(height/2)+marge){
       boutonLigneSelect = !boutonLigneSelect;
+    }
+
+    //idem pour l'outil rectangle
+    if(mouseX<(marge/2)+marge*2&&mouseY>(height/2)+marge){
+      boutonLigneSelect = !boutonLigneSelect;
+      rectX1 = pmouseX;
+      rectY1 = pmouseY;
     }
 }
 
