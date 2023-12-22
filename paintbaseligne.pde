@@ -1,3 +1,4 @@
+//variables globales
 boolean dessiner;
 boolean boutonLigneSelect;
 boolean boutonRectSelect;
@@ -18,7 +19,7 @@ void setup() {
     lastclicX = 0;
     lastclicY = 0;
 
-    //assigner valeur à marge
+    //définir la marge
     marge = 100;
 
     //assigner des valeur de départ aux booléens
@@ -36,6 +37,7 @@ void setup() {
     rectMode (CENTER);
     rect(width/2, height/2, width, height-marge*2);
     
+    //Afficher un message sympathique
     textSize (50);
     textAlign (CENTER, CENTER);
     fill (234, 7, 117);
@@ -44,13 +46,16 @@ void setup() {
 }
 
 void draw () {
+  //Afficher les boutons en appelant la fonction utile
   afficheBoutons ();
+  
+    //Si on a activé l'outil en cliquant dans le cadre de dessin
     if (dessiner == true){
       
-      //si on est dans le cadre de dessin on peut dessiner des formes
+      //et qu'on dessine bien dans le cadre 
       if (mouseY>marge && mouseY<height-marge){
         
-        //
+        //on dessine une forme selon l'outil choisi
         if (boutonLigneSelect==true){
                 line(pmouseX, pmouseY, mouseX, mouseY);
         }
@@ -68,6 +73,8 @@ void draw () {
         }
       }  
     }
+    
+    //les formes sont effacées quand on active le bouton effacer
     if (boutonEffSelect == true){
       fill(255);
       rectMode (CENTER);
@@ -76,17 +83,22 @@ void draw () {
 }
 
 void afficheBoutons() {   
+    //numéro du premier bouton
     numBouton = 0;
+    
+    //paramètres utiles au dessin des boutons
     int a = marge;
     int b = height-(marge/2);
     int c;
     stroke (0);
     rectMode (CENTER);
     
+    //création des boutons
     for(c =a/2; c<(a*4); c=c+a){
       for (numBouton = 0; numBouton<4; numBouton = numBouton +1){
       fill (250, 229, 252);
       rect (c, b, a, a);
+      //afficher le nom des boutons
       textSize (20);
       fill (234, 7, 117);
       textAlign (CENTER, CENTER);
@@ -102,8 +114,6 @@ void afficheBoutons() {
       }
     }
  
-
-
     // afficher le bouton sélectionné en jaune
     if (boutonLigneSelect == true){
         fill (252, 245, 214); 
@@ -118,16 +128,12 @@ void afficheBoutons() {
         fill (252, 245, 214);
         rect (c=a*3+a/2, b, a, a);
       }
-      
-      textSize (25);
-      fill (42, 67, 41);
-      textAlign (LEFT, CENTER);
-      text("Enfoncez < espace > pour effacer la forme en cours", a*5, height-marge/2);
 }
 
 
 
 void mousePressed() {
+    //enregistrer la position de la souris à chaque clic
     lastclicX = mouseX;
     lastclicY = mouseY;
     
@@ -136,28 +142,38 @@ void mousePressed() {
     if(mouseY>marge && mouseY<height-marge){
         dessiner = !dessiner;
     }
-        //(dés)activer le bouton ligne
+    //(dés)activer les boutons quand on clique dessus
+    //bouton ligne
     if(mouseX<marge && mouseY>height-marge){
       boutonLigneSelect = !boutonLigneSelect;
     }
 
-    //(dés)activer le bouton rectangle
+    //bouton rectangle
     if(mouseX<marge*2 && mouseX>marge){
       if (mouseY>height-marge){
         boutonRectSelect = !boutonRectSelect;
       }
     }
 
-    //(dés)activer le bouton ellipse
+    //bouton ellipse
     if(mouseX<marge*3 && mouseX>marge*2){
       if (mouseY>height-marge){
         boutonElSelect = !boutonElSelect;
       }
     }
-        //(dés)activer le bouton effacer
+    //bouton effacer
     if(mouseX<marge*4 && mouseX>marge*3){
       if (mouseY>height-marge){
         boutonEffSelect = !boutonEffSelect;
       }
     }  
+}
+
+void mouseReleased() {
+      //désactiver automatiquement le bouton effacer 
+      if(mouseX<marge*4 && mouseX>marge*3){
+      if (mouseY>height-marge){
+        boutonEffSelect = !boutonEffSelect;
+        }
+      }
 }
